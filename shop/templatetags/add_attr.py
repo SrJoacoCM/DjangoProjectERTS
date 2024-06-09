@@ -8,3 +8,4 @@ def add_attr(field, css):
     clase, valor = css.split(':')
     attrs[clase] = valor
     return field.as_widget(attrs=attrs)
+

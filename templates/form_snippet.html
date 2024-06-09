@@ -4,7 +4,11 @@
 <div class="mb-3">
     {{ field.label_tag }} 
     {% if field.errors %}
-        {{ field|add_attr:"class:is-invalid" }}
+        {% if field|add_attr:"class:is-invalid" %}
+            {{ field|add_attr:"class:is-invalid" }}
+        {% else %}
+            {{ field|add_attr:"class:is-invalid" }}
+        {% endif %}
     {% else %}
         {{ field }} 
     {% endif %}
