@@ -10,8 +10,8 @@
 <form action="" method='post' enctype="multipart/form-data">
     {% csrf_token %}
     {{ form }}
-    <div class="d-flex justify-content-center">
-        <input class="btn btn-outline-primary" type="reset" value="Cancelar" >
+    <div class="d-flex justify-content-center mt-5 mb-5">
+        <a href="{% url 'shop:index' %}" class="btn btn-outline-primary">Volver</a>
         <input class="btn btn-outline-primary" type="submit" value="Guardar"/>
     </div>
 </form>

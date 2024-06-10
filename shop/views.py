@@ -1,19 +1,34 @@
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render, get_object_or_404
-
 from .forms import ContactoForm, ProductoForm
 from .models import Producto
+from django.core.paginator import Paginator
+from django.contrib import messages
 
 
 # Create your views here.
 
 def index (request):
     productos = Producto.objects.all()
+    page = request.GET.get('page', 1)
     
+    try:
+        paginator = Paginator(productos, 10)
+        productos = paginator.page(page)
+    except:
+        raise Http404
+    
+    data = {
+        'entity': productos,
+        'paginator': paginator,
+        
+    }
     return render(
         request,
         'index.html',
-        context={'productos': productos}
+        context={
+            'productos': productos,
+            'paginator': paginator}
     )
 
 
@@ -28,15 +43,6 @@ def detalle(request, producto_id):
         context= {'producto': producto})
     
 
-def formulario(request):
-    if request.method == 'POST':
-        form = ProductoForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('shop:formulario_exitoso')  # Redirigir a alguna página de éxito
-    else:
-        form = ProductoForm()
-    return render(request, 'producto_form.html', {'form': form})
     
 def stickers(request):
     productos = Producto.objects.filter(categoria_id=1)
@@ -69,6 +75,9 @@ def tienda(request):
     return render(request, 'tienda.html')
 
 
+
+
+
 def agregar_producto (request):
     data= {
         'form': ProductoForm()
@@ -77,7 +86,31 @@ def agregar_producto (request):
         formulario = ProductoForm(data=request.POST, files=request.FILES)
         if formulario.is_valid():
            formulario.save()
+           messages.success(request, "Agregado Correctamente")
         else:
             data["form"] = formulario
     
     return render(request,'producto/agregar.html', data)
+
+def modificar_producto(request, id):
+    producto = get_object_or_404(Producto, id=id)
+    data = {
+        'form' : ProductoForm(instance=producto)
+    }
+    if request.method == 'POST':
+        formulario = ProductoForm(data=request.POST, instance=producto, files=request.FILES)
+        if formulario.is_valid():
+           formulario.save()
+           messages.success(request, "Modificado Correctamente")
+           return HttpResponseRedirect('/shop')
+        else:
+            data["form"] = formulario
+    
+    return render(request, 'producto/modificar.html',data)
+
+def eliminar_producto(request, id):
+    producto = get_object_or_404(Producto, id=id)
+    producto.delete()
+    messages.success(request, "Eliminado Correctamente")
+    return HttpResponseRedirect('/shop')
+    

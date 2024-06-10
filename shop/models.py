@@ -16,7 +16,7 @@ class Producto (models.Model):
     descripcion = models.TextField(null=True)
     categoria = models.ForeignKey(Categoria, on_delete= models.CASCADE)
     creado_en = models.DateTimeField(default=timezone.now)
-    imagen = models.ImageField(upload_to="productos")
+    imagen = models.ImageField(upload_to="productos", null=True)
     
     def __str__(self):
         return self.nombre
