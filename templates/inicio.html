@@ -50,6 +50,11 @@
                     <a class="nav-link text-white" href="{% url 'login' %}">Iniciar Sesion</a>
                   </li>
                 {% endif %}
+                {% if perms.shop.view_producto %}
+                  <li class="nav-item">
+                    <a href="{% url 'shop:index' %}" class="nav-link text-white">Administración</a>
+                  </li>
+                {% endif %}
 
 
       
