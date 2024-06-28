@@ -5,3 +5,4 @@ def inicio(request):
         request, 
         'inicio.html'
     )
+    

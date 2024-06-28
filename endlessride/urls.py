@@ -20,13 +20,26 @@ from shop.forms import CustomAuthenticationForm
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
+from shop.views import agregar_producto_carrito,agregar_producto_carrito_otro , eliminar_producto_carrito, panel_pedidos, procesar_pedido, restar_producto_carrito, limpiar_carrito, tienda, carrito, comprar_producto, mis_pedidos
+from django.contrib.auth.views import LoginView
 
 urlpatterns = [
     path('', views.inicio, name="inicio"),
+    path('tienda', tienda, name='tienda'),
+    path('carrito', carrito, name='carrito'),
+    path('mis_pedidos/', mis_pedidos, name='mis_pedidos'),
+    path('comprar/<int:producto_id>/', comprar_producto, name='comprar_producto'),
     path('admin/', admin.site.urls),
     path('shop/', include('shop.urls')),
-     path('accounts/login/', auth_views.LoginView.as_view(authentication_form=CustomAuthenticationForm), name='login'),
+    path('accounts/login/', auth_views.LoginView.as_view(authentication_form=CustomAuthenticationForm), name='login'),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('agregar/<int:producto_id>/', agregar_producto_carrito, name="agregar"),
+    path('agregar_otro/<int:producto_id>/', agregar_producto_carrito_otro, name="agregar_otro"),
+    path('eliminar/<int:producto_id>/', eliminar_producto_carrito, name="eliminar"),
+    path('restas/<int:producto_id>/', restar_producto_carrito, name="restar"),
+    path('limpiar/', limpiar_carrito, name="limpiar"),
+    path('procesar_pedido/', procesar_pedido, name='procesar_pedido'),
+    path('shop/pedidos/', panel_pedidos, name='panel_pedidos'),
 ]
 
 if settings.DEBUG:

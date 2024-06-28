@@ -23,10 +23,10 @@ class ContactoForm(ModelForm):
         model = models.Contacto
         fields = ['nombre', 'correo', 'mensaje',]
         widgets = {
-             'nombre': forms.TextInput(attrs={'class': 'form-control'}),
-             'correo': forms.TextInput(attrs={'class': 'form-control'}),
-             'mensaje': forms.Textarea(attrs={'class': 'form-control'}),
-         }
+            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
+            'correo': forms.TextInput(attrs={'class': 'form-control'}),
+            'mensaje': forms.Textarea(attrs={'class': 'form-control'}),
+        }
         
 class CustomAuthenticationForm(AuthenticationForm):
     username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
